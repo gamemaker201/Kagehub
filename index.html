@@ -1,0 +1,801 @@
+<!-- language: HTML, file: index.html -->
+<!-- *테스트 스크립트 제거 및 실제 KAGE Hub 로드스트링, 디스코드 링크 연동 완료* -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#080808">
+<meta name="description" content="KAGE — Roblox Script Hub. Free, high-quality scripts.">
+<title>KAGE — Roblox Script Hub</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Black+Ops+One&family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+<style>
+:root {
+  --bg: #080808;
+  --panel: #101010;
+  --panel2: #151313;
+  --red: #ff263f;
+  --red2: #a80e24;
+  --text: #f3eeee;
+  --muted: #888185;
+  --line: rgba(255,38,63,.23);
+  --mono: "IBM Plex Mono", monospace;
+}
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; scroll-padding-top: 90px; }
+body {
+  margin: 0;
+  color: var(--text);
+  background:
+    radial-gradient(ellipse at 80% 0%, rgba(107,0,17,.15), transparent 34%),
+    var(--bg);
+  font-family: "Inter", sans-serif;
+  overflow-x: hidden;
+}
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 10;
+  pointer-events: none;
+  opacity: .12;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.92' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.22'/%3E%3C/svg%3E");
+}
+a { color: inherit; text-decoration: none; }
+button { font: inherit; }
+::selection { background: var(--red); color: white; }
+
+/* NAVIGATION */
+.nav {
+  height: 76px;
+  width: 100%;
+  position: fixed;
+  inset: 0 0 auto;
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 7%;
+  background: rgba(8,8,8,.82);
+  border-bottom: 1px solid rgba(255,255,255,.07);
+  backdrop-filter: blur(18px);
+}
+.logo {
+  font-family: "Black Ops One", Impact, sans-serif;
+  color: var(--red);
+  font-size: 31px;
+  letter-spacing: 2px;
+  transform: skew(-8deg);
+  text-shadow: 0 0 28px rgba(255,38,63,.28);
+  display: inline-block;
+}
+.nav-links { display: flex; align-items: center; gap: 36px; }
+.nav-links a {
+  font-size: 12px;
+  letter-spacing: 1px;
+  color: #aaa3a5;
+  transition: .25s;
+}
+.nav-links a:hover { color: white; }
+.nav-links a.active { color: var(--red); }
+.nav-discord {
+  padding: 11px 17px;
+  border: 1px solid var(--red);
+  color: white !important;
+  border-radius: 3px;
+  transition: .25s;
+}
+.nav-discord:hover {
+  background: var(--red);
+  box-shadow: 0 0 24px rgba(255,38,63,.22);
+}
+.menu-toggle {
+  display: none;
+  background: none;
+  border: 1px solid var(--line);
+  color: white;
+  padding: 8px 11px;
+  cursor: pointer;
+}
+
+/* HERO */
+.hero {
+  position: relative;
+  min-height: 690px;
+  display: flex;
+  align-items: center;
+  padding: 130px 10% 95px;
+  isolation: isolate;
+  overflow: hidden;
+  border-bottom: 1px solid var(--line);
+}
+.hero::before {
+  content: "";
+  position: absolute;
+  z-index: -2;
+  inset: 0;
+  background:
+    radial-gradient(ellipse at 78% 47%, rgba(255,25,49,.2), transparent 30%),
+    radial-gradient(ellipse at 78% 55%, rgba(119,0,14,.19), transparent 49%),
+    linear-gradient(90deg, #080808 5%, rgba(8,8,8,.96) 35%, rgba(8,8,8,.4) 76%, #080808 100%);
+}
+.hero::after {
+  content: "影";
+  position: absolute;
+  z-index: -1;
+  right: 11%;
+  top: 70px;
+  font-size: clamp(280px, 39vw, 560px);
+  line-height: 1;
+  color: rgba(255,20,45,.035);
+  writing-mode: vertical-rl;
+  font-weight: 800;
+  pointer-events: none;
+}
+.hero-art {
+  position: absolute;
+  z-index: -1;
+  right: 6%;
+  top: 14%;
+  width: min(47vw, 610px);
+  aspect-ratio: 1;
+  opacity: .83;
+  pointer-events: none;
+}
+.moon {
+  position: absolute;
+  width: 60%;
+  aspect-ratio: 1;
+  top: 4%;
+  right: 12%;
+  border-radius: 50%;
+  background:
+    radial-gradient(circle at 32% 30%, rgba(255,104,113,.7), transparent 7%),
+    radial-gradient(circle at 70% 65%, #6f0619 0, #4a0612 38%, #25050a 68%, #100609 100%);
+  box-shadow: 0 0 75px rgba(255,0,36,.22), inset -25px -12px 50px rgba(0,0,0,.75);
+  overflow: hidden;
+}
+.moon::before {
+  content: "";
+  position: absolute;
+  inset: -10%;
+  background:
+    radial-gradient(ellipse at 32% 42%, transparent 0 12%, rgba(10,0,2,.4) 13% 17%, transparent 18%),
+    radial-gradient(ellipse at 65% 22%, rgba(10,0,2,.5) 0 8%, transparent 9%),
+    radial-gradient(ellipse at 72% 75%, rgba(0,0,0,.6) 0 15%, transparent 16%),
+    repeating-linear-gradient(128deg, transparent 0 22px, rgba(255,38,63,.06) 23px 25px, transparent 26px 47px);
+  border-radius: 50%;
+}
+.warrior {
+  position: absolute;
+  bottom: 0;
+  right: 15%;
+  width: 56%;
+  height: 78%;
+  background: linear-gradient(115deg, #090909 10%, #171013 37%, #070707 67%);
+  clip-path: polygon(40% 0,55% 5%,62% 19%,74% 28%,89% 43%,100% 100%,0 100%,13% 65%,18% 43%,30% 29%,31% 12%);
+  filter: drop-shadow(0 0 18px rgba(255,0,30,.13));
+}
+.warrior::before {
+  content: "";
+  position: absolute;
+  top: 2%;
+  left: 31%;
+  width: 38%;
+  height: 25%;
+  background: linear-gradient(90deg,#050505,#281015,#050505);
+  clip-path: polygon(22% 0,83% 7%,100% 44%,76% 100%,18% 88%,0 30%);
+}
+.warrior::after {
+  content: "";
+  position: absolute;
+  top: 14%;
+  left: 42%;
+  width: 23%;
+  height: 2px;
+  background: var(--red);
+  box-shadow: 0 0 10px var(--red), 0 0 30px var(--red);
+  transform: rotate(-8deg);
+}
+.art-slash {
+  position: absolute;
+  width: 85%;
+  height: 2px;
+  top: 57%;
+  right: -3%;
+  transform: rotate(-30deg);
+  background: linear-gradient(90deg,transparent,rgba(255,38,63,.15),var(--red),transparent);
+  box-shadow: 0 0 18px rgba(255,38,63,.5);
+}
+.art-slash.two { top: 62%; right: -13%; transform: rotate(-34deg); width: 60%; opacity: .55; }
+.hero-content { max-width: 640px; position: relative; z-index: 2; }
+.eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 13px;
+  color: #bdb3b5;
+  font: 11px var(--mono);
+  letter-spacing: 3px;
+  text-transform: uppercase;
+}
+.eyebrow::before { content: ""; width: 27px; height: 1px; background: var(--red); }
+.hero h1 {
+  margin: 26px 0 6px -5px;
+  color: var(--red);
+  font-family: "Black Ops One", Impact, sans-serif;
+  font-size: clamp(82px, 13vw, 160px);
+  line-height: .95;
+  letter-spacing: -4px;
+  transform: skew(-5deg);
+  text-shadow: 3px 4px 0 #4b0612, 0 0 48px rgba(255,0,40,.17);
+}
+.hero-subtitle {
+  margin-top: 23px;
+  font-size: clamp(16px, 2vw, 20px);
+  font-weight: 600;
+}
+.hero-subtitle span { color: var(--red); }
+.hero-description {
+  max-width: 420px;
+  color: #9b9396;
+  font-size: 13px;
+  line-height: 2;
+  margin: 15px 0 28px;
+}
+.hero-actions { display: flex; flex-wrap: wrap; gap: 12px; }
+.btn {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
+  min-height: 45px;
+  padding: 0 20px;
+  border: 1px solid var(--red);
+  border-radius: 3px;
+  background: var(--red);
+  color: white;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: .4px;
+  cursor: pointer;
+  transition: .25s;
+}
+.btn:hover {
+  background: #ff4055;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 28px rgba(255,38,63,.2);
+}
+.btn-outline { background: transparent; color: #ddd; border-color: #494044; }
+.btn-outline:hover { border-color: var(--red); background: rgba(255,38,63,.08); }
+.hero-index {
+  position: absolute;
+  bottom: 31px;
+  right: 7%;
+  color: #655b5e;
+  font: 10px var(--mono);
+  letter-spacing: 2px;
+}
+.hero-index span { color: var(--red); }
+
+/* COMMON SECTION */
+.section { padding: 100px 8% 110px; }
+.section-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: end;
+  gap: 25px;
+  margin-bottom: 40px;
+}
+.section-label {
+  color: var(--red);
+  font: 600 11px var(--mono);
+  letter-spacing: 3px;
+}
+.section h2 {
+  margin: 13px 0 10px;
+  font-size: clamp(25px, 4vw, 36px);
+  letter-spacing: -1.2px;
+}
+.section-description { margin: 0; color: var(--muted); font-size: 13px; line-height: 1.9; }
+.section-side {
+  padding-bottom: 7px;
+  color: #777074;
+  font: 10px var(--mono);
+  letter-spacing: 1px;
+  white-space: nowrap;
+}
+.section-side span { color: var(--red); }
+
+/* SCRIPT CARDS */
+.script-grid { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 17px; }
+.script-card {
+  position: relative;
+  min-width: 0;
+  padding: 25px 23px 21px;
+  overflow: hidden;
+  border: 1px solid #302126;
+  background:
+    radial-gradient(ellipse at 100% 0%, rgba(255,38,63,.075), transparent 42%),
+    linear-gradient(145deg, #131111, #0b0b0b 65%);
+  transition: transform .3s, border-color .3s, box-shadow .3s;
+}
+.script-card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 2px;
+  width: 36%;
+  background: var(--red);
+  transition: width .35s;
+}
+.script-card:hover {
+  transform: translateY(-7px);
+  border-color: rgba(255,38,63,.7);
+  box-shadow: 0 16px 45px rgba(0,0,0,.35), 0 0 35px rgba(255,0,36,.055);
+}
+.script-card:hover::before { width: 100%; }
+.card-meta { display: flex; justify-content: space-between; align-items: center; }
+.card-number { color: #5d5457; font: 12px var(--mono); }
+.card-tag {
+  color: var(--red);
+  border: 1px solid rgba(255,38,63,.28);
+  background: rgba(255,38,63,.07);
+  padding: 5px 8px;
+  font: 9px var(--mono);
+  letter-spacing: 1px;
+}
+.card-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 54px;
+  height: 54px;
+  margin: 27px 0 19px;
+  border: 1px solid rgba(255,38,63,.35);
+  background: rgba(255,38,63,.045);
+  color: var(--red);
+}
+.card-icon svg { width: 25px; height: 25px; }
+.script-card h3 { margin: 0; font-size: 21px; letter-spacing: -.5px; }
+.script-card h3 span { color: var(--red); font-family: "Black Ops One", Impact, sans-serif; }
+.card-desc { min-height: 47px; color: #938b8e; font-size: 12px; line-height: 1.9; margin: 12px 0 20px; }
+.feature-list { display: grid; gap: 10px; margin: 0 0 25px; padding: 0; list-style: none; }
+.feature-list li { display: flex; gap: 10px; color: #c1b8bb; font-size: 11px; }
+.feature-list li::before { content: "↗"; color: var(--red); font-family: var(--mono); }
+.card-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding-top: 17px;
+  border-top: 1px solid rgba(255,255,255,.07);
+}
+.version { color: #70686b; font: 10px var(--mono); }
+.copy-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 10px 12px;
+  color: white;
+  background: transparent;
+  border: 1px solid var(--red2);
+  border-radius: 2px;
+  font-size: 11px;
+  cursor: pointer;
+  transition: .2s;
+}
+.copy-btn:hover { background: var(--red); border-color: var(--red); }
+.copy-btn svg { width: 14px; height: 14px; }
+.code-preview {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 15px;
+  padding: 12px;
+  border: 1px solid #252123;
+  background: #090909;
+  overflow: hidden;
+}
+.code-line { color: #575052; font: 10px var(--mono); }
+.code-preview code {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: #b5a8ad;
+  font: 10px var(--mono);
+}
+.code-preview .code-accent { color: #e56c7c; }
+
+/* ABOUT STRIP */
+.about {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 60px;
+  padding: 75px 10%;
+  background:
+    linear-gradient(100deg, rgba(18,12,13,.96), rgba(8,8,8,.98)),
+    var(--bg);
+  border-top: 1px solid rgba(255,255,255,.06);
+  border-bottom: 1px solid rgba(255,38,63,.22);
+}
+.about-title {
+  color: var(--red);
+  font-family: "Black Ops One", Impact, sans-serif;
+  font-size: clamp(48px, 8vw, 88px);
+  line-height: 1;
+  transform: skew(-7deg);
+}
+.about-copy h3 { font-size: 20px; margin: 0 0 13px; }
+.about-copy p { margin: 0; color: #92898c; font-size: 12px; line-height: 2.1; }
+.about-stats { display: flex; gap: 35px; margin-top: 24px; }
+.stat strong { display: block; color: #f0e9eb; font: 24px var(--mono); }
+.stat span { display: block; color: #766e71; margin-top: 5px; font-size: 10px; letter-spacing: 1px; }
+
+/* FOOTER */
+.footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 25px;
+  padding: 27px 8%;
+  color: #756d70;
+  font-size: 10px;
+}
+.footer-logo { 
+  color: var(--red); 
+  font: 22px "Black Ops One", Impact, sans-serif; 
+  transform: skew(-8deg);
+  display: inline-block;
+}
+.footer-links { display: flex; gap: 22px; }
+.footer-links a:hover { color: var(--red); }
+.footer-note { font-family: var(--mono); letter-spacing: .5px; }
+
+/* TOAST */
+.toast {
+  position: fixed;
+  z-index: 100;
+  bottom: 28px;
+  left: 50%;
+  transform: translate(-50%, 20px);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 13px 19px;
+  border: 1px solid rgba(255,38,63,.45);
+  background: rgba(17,12,13,.96);
+  color: #f4edef;
+  font-size: 12px;
+  opacity: 0;
+  pointer-events: none;
+  transition: .3s;
+  box-shadow: 0 10px 40px #0008;
+  white-space: nowrap;
+}
+.toast.show { opacity: 1; transform: translate(-50%, 0); }
+.toast-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--red); box-shadow: 0 0 10px var(--red); }
+
+/* REVEAL ANIMATION */
+.reveal { opacity: 0; transform: translateY(22px); transition: opacity .7s, transform .7s; }
+.reveal.visible { opacity: 1; transform: translateY(0); }
+
+@media (max-width: 950px) {
+  .nav { padding: 0 5%; }
+  .hero { padding-left: 7%; padding-right: 7%; min-height: 620px; }
+  .hero-art { right: -8%; width: 60vw; opacity: .55; }
+  .section { padding-left: 5%; padding-right: 5%; }
+  .script-grid { grid-template-columns: repeat(2, minmax(0,1fr)); }
+  .script-card:last-child { grid-column: 1 / -1; }
+  .script-card:last-child .card-desc { min-height: auto; }
+  .about { padding-left: 7%; padding-right: 7%; gap: 30px; }
+}
+@media (max-width: 620px) {
+  .nav { height: 65px; }
+  .logo { font-size: 27px; }
+  .menu-toggle { display: block; }
+  .nav-links {
+    position: absolute;
+    top: 64px;
+    left: 0;
+    right: 0;
+    display: none;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0;
+    padding: 10px 5% 18px;
+    border-bottom: 1px solid var(--line);
+    background: rgba(8,8,8,.98);
+  }
+  .nav-links.open { display: flex; }
+  .nav-links a { padding: 15px 8px; border-bottom: 1px solid rgba(255,255,255,.04); }
+  .nav-links .nav-discord { margin-top: 10px; text-align: center; }
+  .hero { min-height: 610px; padding: 125px 7% 90px; align-items: center; }
+  .hero::before { background: linear-gradient(90deg,rgba(8,8,8,.97),rgba(8,8,8,.75)), radial-gradient(ellipse at 85% 35%,rgba(255,0,35,.22),transparent 60%); }
+  .hero-art { width: 95vw; right: -34%; top: 16%; opacity: .35; }
+  .hero h1 { font-size: clamp(78px, 21vw, 125px); }
+  .hero-description { max-width: 340px; }
+  .hero-index { right: 7%; font-size: 9px; }
+  .section { padding: 75px 6% 80px; }
+  .section-top { align-items: start; margin-bottom: 30px; }
+  .section-side { display: none; }
+  .script-grid { grid-template-columns: 1fr; gap: 14px; }
+  .script-card, .script-card:last-child { grid-column: auto; padding: 23px 20px 19px; }
+  .card-desc { min-height: auto; }
+  .about { grid-template-columns: 1fr; gap: 24px; padding: 55px 7%; }
+  .about-title { font-size: 65px; }
+  .about-stats { gap: 26px; }
+  .footer { flex-wrap: wrap; padding: 25px 6%; }
+  .footer-links { gap: 14px; flex-wrap: wrap; }
+  .footer-note { width: 100%; }
+}
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { scroll-behavior: auto !important; transition-duration: .01ms !important; animation-duration: .01ms !important; }
+  .reveal { opacity: 1; transform: none; }
+}
+</style>
+</head>
+
+<body>
+<header class="nav">
+  <a class="logo" href="#home" aria-label="KAGE home">KAGE</a>
+  <button class="menu-toggle" id="menuToggle" aria-label="Toggle menu" aria-expanded="false">☰</button>
+
+  <nav class="nav-links" id="navLinks">
+    <a href="#home" class="active">Home</a>
+    <a href="#scripts">Scripts</a>
+    <a href="#about">About</a>
+    <a href="#footer">Notice</a>
+    <a class="nav-discord" href="#discord" data-discord>◈ DISCORD ↗</a>
+  </nav>
+</header>
+
+<main>
+  <section class="hero" id="home">
+    <div class="hero-art" aria-hidden="true">
+      <div class="moon"></div>
+      <div class="warrior"></div>
+      <div class="art-slash"></div>
+      <div class="art-slash two"></div>
+    </div>
+
+    <div class="hero-content">
+      <div class="eyebrow">ROBLOX SCRIPTS · FREE & OPEN</div>
+      <h1>KAGE</h1>
+      <div class="hero-subtitle">The Ultimate <span>Script Hub.</span></div>
+      <p class="hero-description">
+        High-quality Roblox scripts with no key systems or ads. Just copy the code and paste it into your executor.
+      </p>
+      <div class="hero-actions">
+        <a class="btn" href="#scripts">Browse Scripts <span>↗</span></a>
+        <a class="btn btn-outline" href="#about">How to use</a>
+      </div>
+    </div>
+    <div class="hero-index"><span>01</span> / KAGE SCRIPT HUB</div>
+  </section>
+
+  <section class="section" id="scripts">
+    <div class="section-top reveal">
+      <div>
+        <div class="section-label">SCRIPTS / 001</div>
+        <h2>Latest Scripts</h2>
+        <p class="section-description">Verified features only.</p>
+      </div>
+      <div class="section-side"><span>●</span> ALL SCRIPTS FREE</div>
+    </div>
+
+    <div class="script-grid" style="grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));">
+      <!-- SCRIPT 01 -->
+      <article class="script-card reveal">
+        <div class="card-meta">
+          <span class="card-number">NO. 01 / K-01</span>
+          <span class="card-tag">UNIVERSAL</span>
+        </div>
+        <div class="card-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+            <path d="M12 2 20 6v6c0 5-3.5 8-8 10-4.5-2-8-5-8-10V6l8-4Z"/>
+            <path d="m8 12 2.5 2.5L16 9"/>
+          </svg>
+        </div>
+        <h3><span>KAGE</span> HUB</h3>
+        <p class="card-desc">All-in-one movement and combat script featuring ESP, Fling, Fly, Speed, and Teleport.</p>
+        <ul class="feature-list">
+          <li>ESP & Fling System</li>
+          <li>Fly & Speed Hack</li>
+          <li>Teleport & Draggable UI</li>
+        </ul>
+        <div class="card-footer">
+          <span class="version">VERSION 2.0.0</span>
+          <button class="copy-btn" data-copy="script1">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h3"/></svg>
+            Copy Code
+          </button>
+        </div>
+        <div class="code-preview">
+          <span class="code-line">01</span>
+          <code>-- <span class="code-accent">KAGE HUB</span> · loadstring...</code>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <section class="about reveal" id="about">
+    <div class="about-title">KAGE.</div>
+    <div class="about-copy">
+      <div class="section-label">ABOUT</div>
+      <h3>Zero Friction. Instant Access.</h3>
+      <p>
+        KAGE is a clean space to share scripts without annoying key systems or ads. 
+        Copy the code, paste it into your executor, and you're ready to go.
+      </p>
+      <div class="about-stats">
+        <div class="stat">
+          <strong>01</strong>
+          <span>SCRIPTS</span>
+        </div>
+        <div class="stat">
+          <strong>0</strong>
+          <span>KEYS / ADS</span>
+        </div>
+        <div class="stat">
+          <strong>24/7</strong>
+          <span>UPTIME</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="about" id="discord" style="border-top:0;">
+    <div>
+      <div class="section-label">COMMUNITY</div>
+      <h2 style="font-size:clamp(25px,4vw,36px);margin:13px 0;">Get Update Notifications.</h2>
+      <p class="section-description">Join the Discord to get the latest scripts and patch notes first.</p>
+    </div>
+    <div style="display:flex;align-items:center;justify-content:flex-start;">
+      <a class="btn" href="https://discord.gg/7ACxWz7Hgp" target="_blank">JOIN DISCORD <span>↗</span></a>
+    </div>
+  </section>
+</main>
+
+<footer class="footer" id="footer">
+  <a class="footer-logo" href="#home">KAGE</a>
+  <div class="footer-note">© <span id="year"></span> KAGE. ALL RIGHTS RESERVED.</div>
+  <div class="footer-links">
+    <a href="#home">Home</a>
+    <a href="#scripts">Scripts</a>
+    <a href="#about">About</a>
+    <a href="https://discord.gg/7ACxWz7Hgp" target="_blank">Discord ↗</a>
+  </div>
+</footer>
+
+<div class="toast" id="toast" role="status" aria-live="polite">
+  <span class="toast-dot"></span>
+  <span id="toastMessage">Done</span>
+</div>
+
+<script>
+// Set your Discord Invite Link here
+const DISCORD_URL = "https://discord.gg/7ACxWz7Hgp";
+
+// ==========================================
+// Actual Script Data
+// ==========================================
+const scripts = {
+  script1: `loadstring(game:HttpGet("https://hst.sh/raw/vehevabuva"))()`
+};
+
+// Toast Notifications
+let toastTimer;
+function showToast(message) {
+  const toast = document.getElementById("toast");
+  document.getElementById("toastMessage").textContent = message;
+  toast.classList.add("show");
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => toast.classList.remove("show"), 2400);
+}
+
+// Copy to Clipboard
+async function copyText(text) {
+  try {
+    if (navigator.clipboard && window.isSecureContext) {
+      await navigator.clipboard.writeText(text);
+    } else {
+      const area = document.createElement("textarea");
+      area.value = text;
+      area.style.position = "fixed";
+      area.style.opacity = "0";
+      document.body.appendChild(area);
+      area.focus();
+      area.select();
+      const ok = document.execCommand("copy");
+      area.remove();
+      if (!ok) throw new Error("Copy failed");
+    }
+    showToast("Code copied to clipboard.");
+  } catch (error) {
+    showToast("Failed to copy. Check browser permissions.");
+  }
+}
+
+document.querySelectorAll("[data-copy]").forEach(button => {
+  button.addEventListener("click", () => {
+    const key = button.dataset.copy;
+    if (scripts[key]) copyText(scripts[key]);
+  });
+});
+
+// Discord Link Setup (Fallback for old href)
+document.querySelectorAll("[data-discord]").forEach(link => {
+  link.addEventListener("click", event => {
+    if (!DISCORD_URL) {
+      event.preventDefault();
+      showToast("Please set your Discord invite link.");
+      return;
+    }
+    link.href = DISCORD_URL;
+    link.target = "_blank";
+    link.rel = "noopener noreferrer";
+  });
+});
+
+// Mobile Menu Toggle
+const menuToggle = document.getElementById("menuToggle");
+const navLinks = document.getElementById("navLinks");
+
+menuToggle.addEventListener("click", () => {
+  const open = navLinks.classList.toggle("open");
+  menuToggle.setAttribute("aria-expanded", String(open));
+  menuToggle.textContent = open ? "✕" : "☰";
+});
+
+navLinks.querySelectorAll("a").forEach(link => {
+  link.addEventListener("click", () => {
+    navLinks.classList.remove("open");
+    menuToggle.setAttribute("aria-expanded", "false");
+    menuToggle.textContent = "☰";
+  });
+});
+
+// Scroll Reveal Animation
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add("visible");
+      observer.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.12 });
+
+document.querySelectorAll(".reveal").forEach(element => observer.observe(element));
+
+// Auto Year
+document.getElementById("year").textContent = new Date().getFullYear();
+
+// Active Section Navbar Highlight
+const sections = document.querySelectorAll("main section[id]");
+const navAnchors = document.querySelectorAll('.nav-links a[href^="#"]');
+
+const activeObserver = new IntersectionObserver(entries => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      navAnchors.forEach(anchor => {
+        anchor.classList.toggle(
+          "active",
+          anchor.getAttribute("href") === "#" + entry.target.id
+        );
+      });
+    }
+  });
+}, { rootMargin: "-25% 0px -65% 0px" });
+
+sections.forEach(section => activeObserver.observe(section));
+</script>
+
+</body>
+  </html>
